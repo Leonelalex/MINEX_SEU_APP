@@ -1,10 +1,10 @@
-import React from 'react';
-import {data} from './data.js';
+import React, { useEffect, useState } from 'react';
 
 import './Dashboard.css';
 import SearchBar from './SearchBar.js';
 import { Checkbox, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
+import { getCasos } from './SEU_Api.js';
 
 const  headCells = [
     {
@@ -48,6 +48,14 @@ const handleChangeRowsPerPage = () => {
 };
 
 const Dashboard = () => {
+    const [data, setData] = useState();
+
+    useEffect(() => {
+        getCasos(1,5, localStorage.getItem('token'))
+        .then(casos => {console.log(casos)});
+        console.log(data);
+    }, []);
+    
   return (
     <>
     <h1>Casos TICGS</h1>
@@ -105,6 +113,7 @@ const Dashboard = () => {
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPage={5}
           component="div"
           count={data.length}
           page={1}
