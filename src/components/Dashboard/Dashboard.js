@@ -52,8 +52,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         getCasos(1,5, localStorage.getItem('token'))
-        .then(casos => {console.log(casos)});
-        console.log(data);
+        .then(casos => {setData(casos)});
     }, []);
     
   return (
@@ -61,66 +60,68 @@ const Dashboard = () => {
     <h1>Casos TICGS</h1>
     <SearchBar />
 
-    <div className='gridContainer'>
-        <TableContainer component={Paper}>
-            <Table sx={{minWidth: 650}} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell padding="checkbox">
-                            <Checkbox 
-                                color="primary"
-                                inputProps={{
-                                    'arial-label': 'Select all',
-                                }}
-                            />
-                        </TableCell>
-                        {headCells.map((headCell) => (
-                            <TableCell key={headCell.id} align='right'>
-                                {headCell.label}
+    {() => {if(data){
+            (<div className='gridContainer'>
+            <TableContainer component={Paper}>
+                <Table sx={{minWidth: 650}} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell padding="checkbox">
+                                <Checkbox 
+                                    color="primary"
+                                    inputProps={{
+                                        'arial-label': 'Select all',
+                                    }}
+                                />
                             </TableCell>
-                        ))}
-                    </TableRow>
-                </TableHead>
-                    <TableBody>
-                        {data.map((rowData) => (
-                            <TableRow key={rowData.id}>
-                                <TableCell padding="checkbox"> 
-                                    <Checkbox
-                                        color="primary"
-                                    />
+                            {headCells.map((headCell) => (
+                                <TableCell key={headCell.id} align='right'>
+                                    {headCell.label}
                                 </TableCell>
-                                <TableCell align='right'>
-                                    {rowData.id}
-                                </TableCell>
-                                <TableCell align='right'>
-                                    {rowData.NUMEROCASO}
-                                </TableCell>
-                                <TableCell align='right'>
-                                    {rowData.FECHA_REGISTRO}
-                                </TableCell>
-                                <TableCell align='right'>
-                                    {rowData.CODIGO_ESTADO == 1 ? 'Recibido' : 'Enviado'}
-                                </TableCell>
-                                <TableCell align='right'>
-                                    <IconButton direction="row">
-                                        <AssignmentOutlinedIcon color="primary" />
-                                    </IconButton>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-            </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          rowsPerPage={5}
-          component="div"
-          count={data.length}
-          page={1}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-    </div>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+                        <TableBody>
+                            {data.map((rowData) => (
+                                <TableRow key={rowData.idCaso}>
+                                    <TableCell padding="checkbox"> 
+                                        <Checkbox
+                                            color="primary"
+                                        />
+                                    </TableCell>
+                                    <TableCell align='right'>
+                                        {rowData.idCaso}
+                                    </TableCell>
+                                    <TableCell align='right'>
+                                        {rowData.numeroCaso}
+                                    </TableCell>
+                                    <TableCell align='right'>
+                                        {rowData.fechaRegistro}
+                                    </TableCell>
+                                    <TableCell align='right'>
+                                        {rowData.cosigoEstado == 1 ? 'Recibido' : 'Enviado'}
+                                    </TableCell>
+                                    <TableCell align='right'>
+                                        <IconButton direction="row">
+                                            <AssignmentOutlinedIcon color="primary" />
+                                        </IconButton>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              rowsPerPage={5}
+              component="div"
+              count={data.length}
+              page={1}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+        </div>)
+    }}}
     </>
   )
 };
